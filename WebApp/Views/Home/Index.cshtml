@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    var res = ViewBag.res;
+}
+<div class="form-group">
+    <div class="col-md-10">
+        <button onclick="togglediv('item');toggledivv('meti')">Зашифровать/Расшифровать</button>
+    </div>
+</div>
+<form method="post" name="MyAwesomeForm" enctype="multipart/form-data" asp-controller="Home" asp-action="Index">
+
+    <div id="item" class="form-group">
+        <div class="col-md-10">
+            <p>Это меню шифровки, загрузите тхт или досх файл и введите ключ</p>
+            <input type="file" name="file" />
+        </div>
+    </div>
+    <div id="meti" style="display:none" class="form-group">
+        <div class="col-md-10">
+            <p name="dec">Это меню дешифровки, введите текст и ключ, сохраните плейн текст</p>
+            <input type="file" name="file" />
+            <input id="erzhane" style="display:none" type="text" value="ohno" name="typee" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <p>Введите ключ (например, "скорпион")</p>
+            <input type="text" id ="req" name="text"/>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <div class="col-md-10">
+            <p>Сюда можно ввести текст вручную, если это поле заполнено, то<br/> текст для шифровки/расшифровки будет взят только отсюда,<br /> содержимое файла учитываться не будет</p>
+            <textarea name="mes" rows="3" cols="50"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <textarea name="result" rows="5" cols="50">@res</textarea>
+        </div>
+    </div>
+    <div id="item" class="form-group">
+        <div class="col-md-10">
+            <button type="submit" onclick="validateAndSend(event)">ПОЕХАЛИ</button>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <button type="submit" asp-controller="Home" asp-action="DownloadTxt">Download txt file</button>
+            <button type="submit" asp-controller="Home" asp-action="DownloadDocx">Download .docx file</button>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+
+        </div>
+    </div>
+</form>
+<script>function togglediv(id) {
+    var div = document.getElementById(id);
+    div.style.display = div.style.display == "none" ? "block" : "none";
+    document.getElementById('erzhane').value = 'no';
+    }
+    function toggledivv(id) {
+        var div = document.getElementById(id);
+        div.style.display = div.style.display == "block" ? "none" : "block";
+        document.getElementById('erzhane').value = 'ye';
+    }
+    function validateAndSend(event) {
+        if (MyAwesomeForm.mes.value == '' && document.getElementsByName("file")[0].files.length == 0 && document.getElementsByName("file")[1].files.length == 0) {
+            event.preventDefault();
+            alert("Для работы программы нужен либо файл либо введеный вручную текст");
+                return false;
+            }
+        else {
+                document.getElementById("req").required = true;
+                MyAwesomeForm.submit();
+            }
+    }
+    </script>
