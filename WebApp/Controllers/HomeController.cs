@@ -54,26 +54,19 @@ namespace WebApp.Controllers
                 if (ext == ".docx" || ext == ".txt")
                     if (ext == ".docx")
                     {
-                        using (var localFile = System.IO.File.OpenWrite("ff.docx"))
                         using (var uploadedFile = file.OpenReadStream())
-                        {
-                            uploadedFile.CopyTo(localFile);
-                        }
-                        using (var wordyDocument = WordprocessingDocument.Open("ff.docx", false))
+                        using (var wordyDocument = WordprocessingDocument.Open(uploadedFile, false))
                         {
                             tex = wordyDocument.MainDocumentPart.Document.Body.InnerText;
                         }
-                        System.IO.File.Delete("ff.docx");
                     }
                     else
                     {
-                        using (var localFile = System.IO.File.OpenWrite("ff.txt"))
                         using (var uploadedFile = file.OpenReadStream())
+                        using (var reader = new StreamReader(uploadedFile, Encoding.UTF8))
                         {
-                            uploadedFile.CopyTo(localFile);
+                            tex = reader.ReadToEnd();
                         }
-                        tex = System.IO.File.ReadAllText("ff.txt");
-                        System.IO.File.Delete("ff.txt");
                     }
                 if (typee.Contains("ye"))
                 {
